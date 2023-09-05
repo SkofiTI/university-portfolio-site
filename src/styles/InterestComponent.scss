@@ -1,0 +1,59 @@
+.interests-container {
+    display: flex;
+
+    .interests-component {
+        position: sticky;
+        align-self: flex-start;
+        margin-right: 20px;
+        top: 0px;
+    }
+
+    .menu {
+        width: 200px;
+        background-color: #f2f2f2;
+        padding: 16px 24px;
+        border-radius: 8px;
+
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            white-space: nowrap;
+            
+            a {
+                text-decoration: none;
+                opacity: 0;
+                transition: opacity 0.2s;
+    
+                &:hover {
+                    color: #666;
+                    opacity: 1;
+                }
+            }
+        }
+
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+
+            li {
+                margin-bottom: 8px;
+                
+                a {
+                    text-decoration: none;
+                    color: #666;
+
+                    &:hover {
+                        color: #333;
+                    }
+                }
+            }
+        }
+    }
+
+    .interests-content {
+        padding: 0px 20px;
+    }
+}

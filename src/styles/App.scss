@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    
+    .content {
+        flex: 1;
+        padding-top: 10px;
+    }
+}

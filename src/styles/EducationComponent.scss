@@ -1,0 +1,37 @@
+.education-component {
+    text-align: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin: 0 10px 10px;
+    box-shadow: 0px 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+    .title {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+      
+    .department {
+        font-size: 20px;
+        color: #666;
+        margin: 0 0 40px;
+    }
+
+    .plan-table {
+        margin: 0 auto;
+        max-width: 700px;
+        border-collapse: collapse;
+
+        caption {
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #838383;
+            border-bottom: 0;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #838383;
+        }
+    }
+}

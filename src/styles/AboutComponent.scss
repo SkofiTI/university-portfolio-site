@@ -1,0 +1,23 @@
+.about-component {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 720px;
+    background-color: #f2f2f2;
+    box-shadow: 0px 2px 2px 4px rgba(0, 0, 0, 0.3);
+  
+    .title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 40px;
+    }
+  
+    .description {
+        text-indent: 40px;
+        font-size: 18px;
+        color: #333;
+    
+        .name {
+            font-weight: bold;
+        }
+    }
+}
