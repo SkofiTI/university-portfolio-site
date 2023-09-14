@@ -5,23 +5,23 @@
         <form action="mailto:suren.arakelyan994@gmail.com" method="POST">
             <div class="form-item">
                 <label for="surname">Фамилия</label>
-                <input type="text" id="surname" name="surname" placeholder="Введите фамилию" required autofocus>
+                <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
             </div>
             
             <div class="form-item">
                 <label for="name">Имя</label>
-                <input type="text" id="name" name="name" placeholder="Введите имя" required>
+                <input type="text" id="name" name="name" placeholder="Введите имя">
             </div>
             
             <div class="form-item">
                 <label for="lastname">Отчество</label>
-                <input type="text" id="lastname" name="lastname" placeholder="Введите отчество" required>
+                <input type="text" id="lastname" name="lastname" placeholder="Введите отчество">
             </div>
             
             
             <div class="form-item">
                 <label for="group">Группа</label>
-                <select id="group" name="group" required>
+                <select id="group" name="group">
                     <option value="" disabled selected>Выберите Группу</option>
                     <optgroup label="1 курс">
                         <option value="ИС-1">ИС-1</option>
@@ -90,10 +90,4 @@
     </div>
 </template>
 
-<script>
-    import '../styles/TestComponent.scss';
-
-    export default {
-        name: 'TestComponent'
-    };
-</script>
+<script src="../js/test.js"></script>

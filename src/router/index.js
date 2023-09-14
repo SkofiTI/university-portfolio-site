@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Navbar from '../components/Navbar.vue';
-import Home from '../views/Home.vue';
-import About from '../views/About.vue';
-import Interest from '../views/Interest.vue';
-import Education from '../views/Education.vue';
-import PhotoAlbum from '../views/PhotoAlbum.vue';
-import Contact from '../views/Contact.vue';
-import Test from '../views/Test.vue';
+import Home from '../views/HomeComponent.vue';
+import About from '../views/AboutComponent.vue';
+import Interest from '../views/InterestComponent.vue';
+import Education from '../views/EducationComponent.vue';
+import PhotoAlbum from '../views/PhotoAlbumComponent.vue';
+import Contact from '../views/ContactComponent.vue';
+import Test from '../views/TestComponent.vue';
 
 
 const routes = [
