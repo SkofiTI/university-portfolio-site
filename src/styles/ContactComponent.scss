@@ -28,8 +28,30 @@
                 box-sizing: border-box;
                 width: 300px;
                 padding: 8px;
+                font-size: 14px;
                 border: 1px solid #ccc;
                 border-radius: 4px;
+
+                &:focus {
+                    outline: none;
+                    box-shadow: none;
+                }
+
+                &.success {
+                    border: 1px solid #45a049;
+                }
+    
+                &.error {
+                    border: 1px solid red;
+                }
+            }
+
+            .error-message {
+                width: 300px;
+                text-wrap: wrap;
+                margin-top: 4px;
+                font-size: 14px;
+                color: #dc3545;
             }
             
             .radio-group {
@@ -39,6 +61,84 @@
 
                 label {
                     margin: 0 10px;
+                }
+            }
+
+            #date {
+                cursor: pointer;
+            }
+            
+            #calendar {
+                display: none;
+                position: absolute;
+                top: 50%;
+                width: 300px;
+
+                .calendar-info {
+                    margin: 0;
+                    padding: 1rem 0.5rem 0.5rem;
+                    background: #555555;
+                    text-align: center;
+                    color: #ffffff;
+                    list-style: none;
+    
+                    li {
+                        padding: 0;
+                        margin: 0;
+                        text-transform: uppercase;
+    
+                        &.year-name{
+                            font-size: 1.2rem;
+                            font-weight: 400;
+                        }
+                    }
+
+                    .input-calendar {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 10px;
+
+                        select {
+                            max-width: 100px;
+                        }
+                      }
+                }
+                
+                .weekdays {
+                    display: flex;
+                    margin: 0;
+                    padding: 1rem 0;
+                    background-color: #dddddd;
+    
+                    li {
+                        display: inline-block;
+                        flex: 100%;
+                        text-align: center;
+                    }
+                }
+    
+                .days {
+                    margin: 0;
+                    padding: 0;
+                    background-color: #eeeeee;
+                    display: flex;
+                    flex-wrap: wrap;
+    
+                    li {
+                        display: inline-block;
+                        flex: 0 calc(100% / 7);
+                        text-align: center;
+                        line-height: 30px;
+
+                        &:not(.empty-day):hover {
+                            background-color: #999;
+                            cursor: pointer;
+                        }
+    
+                        &.selected-day {
+                            background-color: #999;
+                        }
+                    }
                 }
             }
         }
@@ -55,12 +155,20 @@
                 border: none;
                 border-radius: 4px;
                 font-weight: bold;
+                user-select: none;
                 cursor: pointer;
 
                 &:hover {
                     background-color: #45a049;
                 }
+
+                &:disabled {
+                    opacity: 0.6;
+                    pointer-events: none;
+                }
             }
+
+            
 
             #clear {
                 border: none;
