@@ -1,4 +1,5 @@
 import '../styles/InterestComponent.scss';
+import { updatePageHistory } from './historyFunctions';
 
 function createInterests(...interests) {
     const sidebar = document.querySelector('.menu');
@@ -55,7 +56,8 @@ export default {
           name: "Мои любимые фильмы",
           items: ["Джентельмены", "Интерстеллар", "Господин Никто"],
         };
-    
+        
+        updatePageHistory();
         createInterests(hobbies, books, music, films);
     },
 };

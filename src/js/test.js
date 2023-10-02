@@ -1,4 +1,5 @@
 import '../styles/TestComponent.scss';
+import { updatePageHistory } from './historyFunctions';
 
 export default {
     name: 'TestComponent',
@@ -23,7 +24,9 @@ export default {
             }
         };
         
-          testForm.addEventListener('submit', handleSubmit);
+        testForm.addEventListener('submit', handleSubmit);
+
+        updatePageHistory();
     },
     methods: {
         validateTestForm() {

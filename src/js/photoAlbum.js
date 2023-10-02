@@ -1,4 +1,5 @@
 import '../styles/PhotoAlbumComponent.scss';
+import { updatePageHistory } from './historyFunctions';
 
 export const fotos = [
     "mohammed_1.jpg",
@@ -44,6 +45,7 @@ export default {
         };
     },
     mounted() {
+        updatePageHistory();
         this.createPhotoAlbum();
     },
     methods: {
@@ -62,14 +64,42 @@ export default {
                 const tooltip = document.createElement("div");
                 tooltip.textContent = titles[index];
                 tooltip.classList.add("tooltip");
+                tooltip.style.pointerEvents = "none";
 
                 const caption = document.createElement("div");
                 caption.textContent = titles[index];
                 caption.classList.add("caption");
 
+                const modalImage = document.createElement("div");
+                modalImage.classList.add("modal")
+                modalImage.id = titles[index];
+
+                const closeModalImage = document.createElement("span");
+                closeModalImage.classList.add("close")
+                closeModalImage.innerHTML = "&times;";
+
+                const imageContentModal = document.createElement("img");
+                imageContentModal.classList.add("modal-content");
+                imageContentModal.id = fotos[index];
+                imageContentModal.src = require(`../assets/album/${fotos[index]}`);
+
+                modalImage.appendChild(closeModalImage);
+                modalImage.appendChild(imageContentModal);
+
                 photoItem.appendChild(img);
                 photoItem.appendChild(tooltip);
                 photoItem.appendChild(caption);
+                photoItem.appendChild(modalImage);
+
+                img.addEventListener('click', () => {
+                    modalImage.style.display = "block";
+                    document.body.style.overflow = "hidden";
+                });
+
+                closeModalImage.addEventListener('click', () => {
+                    modalImage.style.display = "none";
+                    document.body.style.overflow = "auto";
+                });
 
                 photoAlbumElement.appendChild(photoItem);
             }

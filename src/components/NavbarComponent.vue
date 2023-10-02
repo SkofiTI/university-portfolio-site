@@ -12,6 +12,7 @@
             <li><router-link active-class="active" to="/photo-album">Фотоальбом</router-link></li>
             <li><router-link active-class="active" to="/contact">Контакт</router-link></li>
             <li><router-link active-class="active" to="/test">Тест по БЖД</router-link></li>
+            <li><router-link active-class="active" to="/history">История просмотра</router-link></li>
         </ul>
         <div class="current-date">{{ currentDateTime }}</div>
     </nav>

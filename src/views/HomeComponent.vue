@@ -7,10 +7,4 @@
     </div>
 </template>
 
-<script>
-    import '../styles/HomeComponent.scss'
-
-    export default {
-        name: 'HomeComponent'
-    };
-</script>
+<script src="../js/home.js"></script>

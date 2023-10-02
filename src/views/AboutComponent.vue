@@ -15,12 +15,6 @@
             </p>
         </div>
     </div>
-  </template>
+</template>
   
-<script>
-    import '../styles/AboutComponent.scss';
-
-    export default {
-        name: 'AboutComponent'
-    };
-</script>
+  <script src="../js/about.js"></script>

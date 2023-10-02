@@ -1,4 +1,5 @@
 import '../styles/ContactComponent.scss';
+import { updatePageHistory } from './historyFunctions';
 
 const monthNames = [
     'Январь',
@@ -23,6 +24,8 @@ export default {
     name: 'ContactComponent',
 
     mounted() {
+        updatePageHistory();
+
         const dateInput = document.getElementById('date');
         const calendar = document.getElementById('calendar');
 

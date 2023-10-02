@@ -1,5 +1,12 @@
 import '../styles/NavbarComponent.scss';
 
+const interests = [
+    ['hobby', 'Мои хобби'],
+    ['book', 'Мои любимые книги'],
+    ['music', 'Моя любимая музыка'],
+    ['films', 'Мои любимые фильмы']
+];
+
 export default {
     name: 'NavbarComponent',
   
@@ -17,8 +24,8 @@ export default {
         const interestsDropdown = document.querySelector('.interests-dropdown');
         const dropdown = document.querySelector('.dropdown-content');
         
-        interestsDropdown.addEventListener('mouseenter', () => this.handleMouseEnter(dropdown));
-        interestsDropdown.addEventListener('mouseleave', () => this.handleMouseLeave(dropdown));
+        interestsDropdown.addEventListener('mouseenter', () => this.createInterests(interests, dropdown));
+        interestsDropdown.addEventListener('mouseleave', () => {dropdown.innerHTML = ''});
         
         this.scrollToHash();
         this.updateDateTime();
@@ -33,19 +40,6 @@ export default {
             const year = currentDate.getFullYear();
             
             this.currentDateTime = `${day} ${month} ${year}`;
-        },
-        handleMouseEnter(dropdown) {
-            const interests = [
-                ['hobby', 'Мои хобби'],
-                ['book', 'Мои любимые книги'],
-                ['music', 'Моя любимая музыка'],
-                ['films', 'Мои любимые фильмы']
-            ];
-        
-            this.createInterests(interests, dropdown);
-        },
-        handleMouseLeave(dropdown) {
-            dropdown.innerHTML = '';
         },
         createInterests(interests, dropdown) {
             const interestDropdown = document.createElement('ul');

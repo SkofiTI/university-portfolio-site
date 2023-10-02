@@ -7,6 +7,7 @@ import Education from '../views/EducationComponent.vue';
 import PhotoAlbum from '../views/PhotoAlbumComponent.vue';
 import Contact from '../views/ContactComponent.vue';
 import Test from '../views/TestComponent.vue';
+import History from '../views/HistoryComponent.vue';
 
 
 const routes = [
@@ -72,7 +73,16 @@ const routes = [
       navbar: Navbar,
     },
     meta: { title: 'Тест по БЖД' }
-  }
+  },
+  {
+    path: '/history',
+    name: 'history',
+    components: {
+      default: History,
+      navbar: Navbar,
+    },
+    meta: { title: 'История просмотра' }
+  },
 ];
 
 const router = createRouter({
