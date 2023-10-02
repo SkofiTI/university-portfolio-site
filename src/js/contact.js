@@ -89,7 +89,7 @@ export default {
             } else if (target.id === 'email') {
                 this.validateEmail(target);
             }
-        
+
             this.checkFormValidate(form);
         });
 
@@ -149,60 +149,78 @@ export default {
             return emailRegex.test(email);
         },
         validateName(nameInput) {
-            if (!this.regexName(nameInput.value)) {
-                if (!nameInput.classList.contains('error')) {
-                    nameInput.classList.remove('success');
-                    nameInput.classList.add('error');
-                    
-                    nameInput.nextElementSibling.textContent = 'Введите ФИО в формате "Фамилия Имя Отчество"';
-                    
-                    return false;
+            if (nameInput.value != '') {
+                if (!this.regexName(nameInput.value)) {
+                    if (!nameInput.classList.contains('error')) {
+                        nameInput.classList.remove('success');
+                        nameInput.classList.add('error');
+                        
+                        nameInput.nextElementSibling.textContent = 'Введите ФИО в формате "Фамилия Имя Отчество"';
+                        
+                        return false;
+                    }
+                } else {
+                    nameInput.classList.remove('error');
+                    nameInput.classList.add('success');
+
+                    nameInput.nextElementSibling.textContent = '';
+
+                    return true;
                 }
             } else {
                 nameInput.classList.remove('error');
-                nameInput.classList.add('success');
-
+                nameInput.classList.remove('success');
                 nameInput.nextElementSibling.textContent = '';
-
-                return true;
             }
         },
         validatePhone(phoneInput) {
-            if (!this.regexPhone(phoneInput.value)) {
-                if (!phoneInput.classList.contains('error')) {
-                    phoneInput.classList.remove('success');
-                    phoneInput.classList.add('error');
+            if (phoneInput.value != '') {
+                if (!this.regexPhone(phoneInput.value)) {
+                    if (!phoneInput.classList.contains('error')) {
+                        phoneInput.classList.remove('success');
+                        phoneInput.classList.add('error');
+                        
+                        phoneInput.nextElementSibling.textContent = 'Введите правильный номер телефона +7/+3xxxxxxxxx';
                     
-                    phoneInput.nextElementSibling.textContent = 'Введите правильный номер телефона +7/+3xxxxxxxxx';
-                
-                    return false;
+                        return false;
+                    }
+                } else {
+                    phoneInput.classList.remove('error');
+                    phoneInput.classList.add('success');
+
+                    phoneInput.nextElementSibling.textContent = '';
+
+                    return true;
                 }
             } else {
                 phoneInput.classList.remove('error');
-                phoneInput.classList.add('success');
-
+                phoneInput.classList.remove('success');
                 phoneInput.nextElementSibling.textContent = '';
-
-                return true;
             }
         },
         validateEmail(emailInput) {
-            if (!this.regexEmail(emailInput.value)) {
-                if (!emailInput.classList.contains('error')) {
-                    emailInput.classList.remove('success');
-                    emailInput.classList.add('error');
-                    
-                    emailInput.nextElementSibling.textContent = 'Введите корректный email-адрес';
+            if (emailInput.value != '') {
+                if (!this.regexEmail(emailInput.value)) {
+                    if (!emailInput.classList.contains('error')) {
+                        emailInput.classList.remove('success');
+                        emailInput.classList.add('error');
+                        
+                        emailInput.nextElementSibling.textContent = 'Введите корректный email-адрес';
 
-                    return false;
+                        return false;
+                    }
+                } else {
+                    emailInput.classList.remove('error');
+                    emailInput.classList.add('success');
+
+                    emailInput.nextElementSibling.textContent = '';
+
+                    return true;
                 }
             } else {
                 emailInput.classList.remove('error');
-                emailInput.classList.add('success');
-
+                emailInput.classList.remove('success');
                 emailInput.nextElementSibling.textContent = '';
-
-                return true;
             }
         },
         setCalendar(year, month) { // Функция генерации календаря
