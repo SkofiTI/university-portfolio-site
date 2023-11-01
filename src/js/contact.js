@@ -1,5 +1,6 @@
 import '../styles/ContactComponent.scss';
 import { updatePageHistory } from './historyFunctions';
+import $ from 'jquery';
 
 const monthNames = [
     'Январь',
@@ -26,64 +27,67 @@ export default {
     mounted() {
         updatePageHistory();
 
-        const dateInput = document.getElementById('date');
-        const calendar = document.getElementById('calendar');
+        const modal = $('#modalSubmit');
+        const sendModalButton = $('#send-modal');
+        const closeModalButton = $('#close-modal');
 
-        const birthYearSelect = document.getElementById('birth-year');
-        const birthMonthSelect = document.getElementById('birth-month');
+        const dateInput = $('#date');
+        const calendar = $('#calendar');
+
+        const birthYearSelect = $('#birth-year');
+        const birthMonthSelect = $('#birth-month');
 
         const nowDate = new Date();
         const nowYear = nowDate.getFullYear();
         
         // Генератор годов
         for (let year = nowYear; year >= 1900; year--) {
-            const option = document.createElement('option');
-            option.value = year;
-            option.textContent = year;
-            birthYearSelect.appendChild(option);
+            birthYearSelect.append($('<option>', {
+                value: year,
+                text: year
+            }));
         }
 
         // Генератор месяцев
-        for (let i = 0; i < monthNames.length; i++) {
-            const option = document.createElement('option');
-            option.value = i;
-            option.textContent = monthNames[i];
-            birthMonthSelect.appendChild(option);
-        }
+        $.each(monthNames, function (i, monthName) {
+            birthMonthSelect.append($('<option>', {
+                value: i,
+                text: monthName
+            }));
+        });
 
         // Слушатели событий на изменение месяца и года
-        birthYearSelect.addEventListener('change',
+        birthYearSelect.on('change',
             () => this.updateCalendar(birthYearSelect, birthMonthSelect));
-        birthMonthSelect.addEventListener('change',
+        birthMonthSelect.on('change',
             () => this.updateCalendar(birthYearSelect, birthMonthSelect));
 
         // Инициализация календаря
-        this.setCalendar(birthYearSelect.value, Number(birthMonthSelect.value));
+        this.setCalendar(birthYearSelect.val(), parseInt(birthMonthSelect.val()));
 
         // Слушатели событий на открытие/закрытие календаря
-        dateInput.addEventListener('click', (event) => {
+        dateInput.on('click', (event) => {
             event.stopPropagation();
-            let computedStyles = getComputedStyle(calendar);
-            let calendarDisplay = computedStyles.display;
+            let calendarDisplay = calendar.css('display');
 
             if (calendarDisplay === 'block') {
-                calendar.style.display = 'none';
+                calendar.css('display', 'none');
             } else if (calendarDisplay === 'none') {
-                calendar.style.display = 'block';
+                calendar.css('display', 'block');
             }
         });
         
-        document.addEventListener('click', (event) => {
-            if (!calendar.contains(event.target) && event.target != calendar) {
-                calendar.style.display = 'none';
+        $(document).on('click', (event) => {
+            if (!$(event.target).closest(calendar).length) {
+                calendar.css('display', 'none');
             }
         });
 
         // Валидация
-        const form = document.querySelector('.contact-component form');
+        const form = $('.contact-component form');
 
-        form.addEventListener('input', (event) => {
-            const target = event.target;
+        form.on('input', (event) => {
+            const target = $(event.target);
 
             if (target.id === 'name') {
                 this.validateName(target);
@@ -96,48 +100,108 @@ export default {
             this.checkFormValidate(form);
         });
 
-        const days = form.querySelector('.days');
-        days.addEventListener('click', () => this.checkFormValidate(form));
+        const days = form.find('.days');
+        days.on('click', () => {
+            this.checkFormValidate(form);
+        });
 
-        const resetButton = form.querySelector('#clear');
-        resetButton.addEventListener('click', () => {
+        const resetButton = form.find('#clear');
+        resetButton.on('click', () => {
             setTimeout(() => {
                 this.checkFormValidate(form);
             }, 0);
         });
+
+        // Слушатель события на открытие popover окна
+        form.find('input').on('mouseenter', (event) => {
+            const target = $(event.currentTarget);
+            if (target.siblings('.popover').length === 0) {
+                this.showPopover(target);
+            }
+        });
+
+        // Отправка формы
+        const sendButton = $('#send');
+
+        sendButton.on('click', (event) => {
+            event.preventDefault();
+            modal.css('display', 'flex');
+            $('body').css('overflow', 'hidden');
+        });
+
+        sendModalButton.on('click', () => {
+            if (this.checkFormValidate(form)) {
+                form.trigger('submit');
+                modal.css('display', 'none');
+                $('body').css('overflow', 'scroll');
+            }
+        });
+
+        closeModalButton.on('click', () => {
+            modal.css('display', 'none');
+            $('body').css('overflow', 'scroll');
+        });
     },
     methods: {
+        showPopover(target){
+            const formItem = target.closest('.form-item');
+            const popoverText = target.attr('data-popover');
+
+            if (!popoverText) {
+                return;
+            }
+
+            const popover = $('<div>').addClass('popover').text(popoverText);
+          
+            formItem.append(popover);
+          
+            const inputPosition = target.position();
+            const popoverPosition = {
+                top: inputPosition.top + target.outerHeight() / 2 - popover.outerHeight() / 2,
+                left: inputPosition.left + target.outerWidth() + 10,
+            };
+          
+            popover.css(popoverPosition);
+
+            target.on('mouseleave', () => {
+                setTimeout(() => {
+                    popover.remove();
+                }, 2000);
+            });
+        },
         checkFormValidate(form) {
-            const nameInput = form.querySelector('#name');
-            const phoneInput = form.querySelector('#phone');
-            const emailInput = form.querySelector('#email');
-            const dateInput = form.querySelector('#date');
-            const ageInput = form.querySelector('#age');
-            const radioInputs = form.querySelectorAll('input[type="radio"]');
-            const sendButton = form.querySelector('#send');
+            const nameInput = form.find('#name');
+            const phoneInput = form.find('#phone');
+            const emailInput = form.find('#email');
+            const dateInput = form.find('#date');
+            const ageInput = form.find('#age');
+            const radioInputs = form.find('input[type="radio"]');
+            const sendButton = form.find('#send');
             let isFormValid = true;
         
             if (!this.validateName(nameInput) |
                 !this.validatePhone(phoneInput) |
                 !this.validateEmail(emailInput) |
-                dateInput.value === '' ||
-                ageInput.value === '') {
+                dateInput.val() === '' ||
+                ageInput.val() === '') {
                 isFormValid = false;
             }
         
             let isRadioSelected = false;
-            for (let i = 0; i < radioInputs.length; i++) {
-                if (radioInputs[i].checked) {
+            radioInputs.each(function () {
+                if ($(this).prop('checked')) {
                     isRadioSelected = true;
-                    break;
+                    return false;
                 }
-            }
+            });
 
             if (!isRadioSelected) {
                 isFormValid = false;
             }
         
-            sendButton.disabled = !isFormValid;
+            sendButton.prop('disabled', !isFormValid);
+            
+            return isFormValid;
         },
         regexName(name) {
             const nameRegex = /^([а-яА-ЯёЁ]+\s[а-яА-ЯёЁ]+\s[а-яА-ЯёЁ]+|[a-zA-Z]+\s[a-zA-Z]+\s[a-zA-Z]+)$/;
@@ -152,93 +216,84 @@ export default {
             return emailRegex.test(email);
         },
         validateName(nameInput) {
-            if (nameInput.value != '') {
-                if (!this.regexName(nameInput.value)) {
-                    if (!nameInput.classList.contains('error')) {
-                        nameInput.classList.remove('success');
-                        nameInput.classList.add('error');
-                        
-                        nameInput.nextElementSibling.textContent = 'Введите ФИО в формате "Фамилия Имя Отчество"';
+            if (nameInput.val() != '') {
+                if (!this.regexName(nameInput.val())) {
+                    if (!nameInput.hasClass('error')) {
+                        nameInput.removeClass('success');
+                        nameInput.addClass('error');
+                        nameInput.next().text('Введите ФИО в формате "Фамилия Имя Отчество"');
                         
                         return false;
                     }
                 } else {
-                    nameInput.classList.remove('error');
-                    nameInput.classList.add('success');
+                    nameInput.removeClass('error');
+                    nameInput.addClass('success');
 
-                    nameInput.nextElementSibling.textContent = '';
+                    nameInput.next().text('');
 
                     return true;
                 }
             } else {
-                nameInput.classList.remove('error');
-                nameInput.classList.remove('success');
-                nameInput.nextElementSibling.textContent = '';
+                nameInput.removeClass('error');
+                nameInput.removeClass('success');
+                nameInput.next().text('');
             }
         },
         validatePhone(phoneInput) {
-            if (phoneInput.value != '') {
-                if (!this.regexPhone(phoneInput.value)) {
-                    if (!phoneInput.classList.contains('error')) {
-                        phoneInput.classList.remove('success');
-                        phoneInput.classList.add('error');
-                        
-                        phoneInput.nextElementSibling.textContent = 'Введите правильный номер телефона +7/+3xxxxxxxxx';
-                    
+            if (phoneInput.val() !== '') {
+                if (!this.regexPhone(phoneInput.val())) {
+                    if (!phoneInput.hasClass('error')) {
+                        phoneInput.removeClass('success');
+                        phoneInput.addClass('error');
+                        phoneInput.next().text('Введите правильный номер телефона +7/+3xxxxxxxxx');
                         return false;
                     }
                 } else {
-                    phoneInput.classList.remove('error');
-                    phoneInput.classList.add('success');
-
-                    phoneInput.nextElementSibling.textContent = '';
-
+                    phoneInput.removeClass('error');
+                    phoneInput.addClass('success');
+                    phoneInput.next().text('');
                     return true;
                 }
             } else {
-                phoneInput.classList.remove('error');
-                phoneInput.classList.remove('success');
-                phoneInput.nextElementSibling.textContent = '';
+                phoneInput.removeClass('error');
+                phoneInput.removeClass('success');
+                phoneInput.next().text('');
             }
         },
         validateEmail(emailInput) {
-            if (emailInput.value != '') {
-                if (!this.regexEmail(emailInput.value)) {
-                    if (!emailInput.classList.contains('error')) {
-                        emailInput.classList.remove('success');
-                        emailInput.classList.add('error');
-                        
-                        emailInput.nextElementSibling.textContent = 'Введите корректный email-адрес';
-
+            if (emailInput.val() !== '') {
+                if (!this.regexEmail(emailInput.val())) {
+                    if (!emailInput.hasClass('error')) {
+                        emailInput.removeClass('success');
+                        emailInput.addClass('error');
+                        emailInput.next().text('Введите корректный email-адрес');
                         return false;
                     }
                 } else {
-                    emailInput.classList.remove('error');
-                    emailInput.classList.add('success');
-
-                    emailInput.nextElementSibling.textContent = '';
-
+                    emailInput.removeClass('error');
+                    emailInput.addClass('success');
+                    emailInput.next().text('');
                     return true;
                 }
             } else {
-                emailInput.classList.remove('error');
-                emailInput.classList.remove('success');
-                emailInput.nextElementSibling.textContent = '';
+                emailInput.removeClass('error');
+                emailInput.removeClass('success');
+                emailInput.next().text('');
             }
         },
         setCalendar(year, month) { // Функция генерации календаря
-            const container = document.getElementById('calendar');
-            const monthContainer = container.querySelector('.month-name');
-            const yearContainer = container.querySelector('.year-name');
-            const daysContainer = container.querySelector('.days');
+            const container = $('#calendar');
+            const monthContainer = container.find('.month-name');
+            const yearContainer = container.find('.year-name');
+            const daysContainer = container.find('.days');
 
             let monthDays = new Date(year, month + 1, 0).getDate(), // Количество дней в текущем месяце
                 monthPrefix = new Date(year, month, 0).getDay(), // Количество дней прошлого месяца в текущей неделе
                 monthDaysText = '';
 
-            monthContainer.textContent = monthNames[month];
-            yearContainer.textContent = year;
-            daysContainer.innerHTML = '';
+                monthContainer.text(monthNames[month]);
+                yearContainer.text(year);
+                daysContainer.empty();
             
             if (monthPrefix > 0){
                 for (let i = 1  ; i <= monthPrefix; i++){
@@ -250,49 +305,47 @@ export default {
                 monthDaysText += '<li>' + i + '</li>';
             }
 
-            daysContainer.innerHTML = monthDaysText;
+            daysContainer.html(monthDaysText);
 
             this.setDayCalendar(year, month, daysContainer);
         },
         setDayCalendar(year, month, daysContainer) { // Функция выбора определённого дня в календаре
-            const days = daysContainer.getElementsByTagName('li');
-            const calendar = document.getElementById('calendar');
+            const days = daysContainer.find('li');
+            const calendar = $('#calendar');
 
-            for (let i = 0; i < days.length; i++) {
-                const day = days[i];
+            days.each(function () {
+                const day = $(this);
 
-                if ((year == selectedBirthYear) && (month == selectedBirthMonth) && (day.textContent == selectedBirthDay)) {
-                    day.classList.add('selected-day');
+                if ((year == selectedBirthYear) && (month == selectedBirthMonth) && (day.text() == selectedBirthDay)) {
+                    day.addClass('selected-day');
                 }
 
-                day.addEventListener('click', () => {
-                    const selectedDay = day.textContent;
+                day.on('click', function () {
+                    const selectedDay = day.text();
 
                     if (selectedDay === '') {
                         return;
                     }
 
-                    for (let i = 0; i < days.length; i++) {
-                        days[i].classList.remove('selected-day');
-                    }
+                    days.removeClass('selected-day');
 
                     const formattedDate = `${selectedDay}.${month + 1}.${year}`;
-                    
-                    const dateInput = document.getElementById('date');
-                    dateInput.value = formattedDate;
-                    
+
+                    const dateInput = $('#date');
+                    dateInput.val(formattedDate);
+
                     selectedBirthDay = selectedDay;
                     selectedBirthMonth = month;
                     selectedBirthYear = year;
 
-                    day.classList.add('selected-day');
-                    calendar.style.display = 'none';
+                    day.addClass('selected-day');
+                    calendar.css('display', 'none');
                 });
-            }
+            });
         },
         updateCalendar(birthYearSelect, birthMonthSelect) { // Функция обновления календаря
-            const selectedYear = parseInt(birthYearSelect.value);
-            const selectedMonth = parseInt(birthMonthSelect.value);
+            const selectedYear = parseInt(birthYearSelect.val());
+            const selectedMonth = parseInt(birthMonthSelect.val());
             this.setCalendar(selectedYear, selectedMonth);
         },
     },

@@ -1,11 +1,12 @@
 import '../styles/TestComponent.scss';
 import { updatePageHistory } from './historyFunctions';
+import $ from 'jquery';
 
 export default {
     name: 'TestComponent',
     mounted() {
-        const testForm = document.querySelector('.test-component form');
-        const textarea = document.querySelector('#question1');
+        const testForm = $('.test-component form');
+        const textarea = $('#question1');
         const minWordCount = 30;
 
         const handleSubmit = (event) => {
@@ -14,7 +15,7 @@ export default {
                 return;
             }
         
-            const text = textarea.value.trim();
+            const text = textarea.val().trim();
             const wordCount = text.split(/\s+/).length;
         
             if (wordCount < minWordCount) {
@@ -24,24 +25,24 @@ export default {
             }
         };
         
-        testForm.addEventListener('submit', handleSubmit);
+        testForm.on('submit', handleSubmit);
 
         updatePageHistory();
     },
     methods: {
         validateTestForm() {
-            const form = document.querySelector('.test-component form');
-            const inputs = form.querySelectorAll('input, select, textarea');
+            const form = $('.test-component form');
+            const inputs = form.find('input, select, textarea');
             let radioChecked = false;
 
             for (let i = 0; i < inputs.length; i++) {
-                if (!inputs[i].value) {
+                if (!inputs.eq(i).val()) {
                     alert('Пожалуйста, заполните все поля формы');
-                    inputs[i].focus();
+                    inputs.eq(i).focus();
                     return false;
                 }
 
-                if (inputs[i].type === 'radio' && inputs[i].checked) {
+                if (inputs.eq(i).attr('type') === 'radio' && inputs.eq(i).prop('checked')) {
                     radioChecked = true;
                 }
             }

@@ -5,7 +5,7 @@
       <form action="mailto:suren.arakelyan994@gmail.com" method="POST">
             <div class="form-item">
                 <label for="name">Фамилия Имя Отчество <span id="required">*</span></label>
-                <input type="text" id="name" name="name" placeholder="Введите ФИО">
+                <input type="text" id="name" name="name" placeholder="Введите ФИО" data-popover='Иванов Иван Иванович'>
                 <div class="error-message"></div>
             </div>
 
@@ -38,7 +38,7 @@
 
             <div class="form-item">
                 <label for="phone">Телефон <span id="required">*</span></label>
-                <input type="tel" id="phone" name="phone" placeholder="Введите номер телефона">
+                <input type="tel" id="phone" name="phone" placeholder="Введите номер телефона" data-popover="+7/+3xxxxxxxxx">
                 <div class="error-message"></div>
             </div>
             
@@ -69,17 +69,28 @@
             
             <div class="form-item">
                 <label for="email">E-mail <span id="required">*</span></label>
-                <input type="email" id="email" name="email" placeholder="Введите e-mail">
+                <input type="email" id="email" name="email" placeholder="Введите e-mail" data-popover="example@example.com">
                 <div class="error-message"></div>
             </div>
             
             <div class="button-container">
-                <button id="send" type="submit" disabled>Отправить</button>
+                <button id="send" disabled>Отправить</button>
                 <button id="clear" type="reset">
                     <img id="reset" src="../assets/reset.svg" alt="reset">
                 </button>
             </div>
         </form>
+    </div>
+    <div class="modal-contact" id="modalSubmit">
+        <div class="modal-content">
+            <div class="modal-title">
+                <p>Вы действительно хотите это сделать?</p>
+            </div>
+            <div class="modal-button-container">
+                <button id="send-modal" type="submit">Да</button>
+                <button id="close-modal">Нет</button>
+            </div>
+        </div>
     </div>
 </template>
   

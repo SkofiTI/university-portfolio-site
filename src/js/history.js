@@ -1,5 +1,6 @@
 import '../styles/HistoryComponent.scss';
 import { getCookie } from './historyFunctions';
+import $ from 'jquery';
 
 export default {
     name: 'History',
@@ -8,11 +9,11 @@ export default {
         const sessionHistoryJSON = localStorage.getItem('sessionHistory');
         const overallHistoryJSON = getCookie('overallHistory');
 
-        const sessionHistoryTableBody = document.getElementById('sessionHistoryTableBody');
-        const overallHistoryTableBody = document.getElementById('overallHistoryTableBody');
+        const sessionHistoryTableBody = $('#sessionHistoryTableBody');
+        const overallHistoryTableBody = $('#overallHistoryTableBody');
 
-        sessionHistoryTableBody.innerHTML = '<tr><td colspan="2">Нет данных для отображения</td></tr>';
-        overallHistoryTableBody.innerHTML = '<tr><td colspan="2">Нет данных для отображения</td></tr>';
+        sessionHistoryTableBody.html('<tr><td colspan="2">Нет данных для отображения</td></tr>');
+        overallHistoryTableBody.html('<tr><td colspan="2">Нет данных для отображения</td></tr>');
 
         if (sessionHistoryJSON) {
             const sessionHistory = JSON.parse(sessionHistoryJSON);
@@ -26,23 +27,23 @@ export default {
     },
     methods: {
         fillHistoryTable(history, tableId) {
-            const tableBody = document.getElementById(tableId);
-            tableBody.innerHTML = '';
+            const tableBody = $('#' + tableId);
+            tableBody.empty();
           
-            for (const [path, visits] of Object.entries(history)) {
-                const row = document.createElement('tr');
+            $.each(history, function (path, visits) {
+                const row = $('<tr></tr>');
 
-                const pathCell = document.createElement('td');
-                pathCell.textContent = path;
+                const pathCell = $('<td></td>');
+                pathCell.text(path);
 
-                const visitsCell = document.createElement('td');
-                visitsCell.textContent = visits;
+                const visitsCell = $('<td></td>');
+                visitsCell.text(visits);
             
-                row.appendChild(pathCell);
-                row.appendChild(visitsCell);
+                row.append(pathCell);
+                row.append(visitsCell);
             
-                tableBody.appendChild(row);
-            }
+                tableBody.append(row);
+            });
         }
     },
 }
