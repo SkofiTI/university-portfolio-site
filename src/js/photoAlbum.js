@@ -43,19 +43,22 @@ let movePosition = 0;
 
 export default {
     name: "PhotoAlbumComponent",
-
+    data() {
+        return {
+            photoAlbumElement: null,
+        };
+    },
     mounted() {
         updatePageHistory();
         this.createPhotoAlbum();
 
-        const sliderItem = $('.slider-item');
-        const sliderItemsCount = sliderItem.length;
+        const sliderItemsCount = fotos.length;
         const sliderItemWidth = $('.slider-item').width();
 
         $('.next').on('click', () => {
             position += 1;
             movePosition -= sliderItemWidth;
-
+            
             this.setPosition(movePosition);
             this.checkButtons(sliderItemsCount, sliderItemWidth);
         });
@@ -88,16 +91,25 @@ export default {
 
             this.setPosition(movePosition);
         },
-        createPhotoAlbum() {
+        createPhotoAlbum(sliderItemWidth) {
+            const modalContainer = $('.modal');
+            const modalCloseElement = $('.close');
+            const photoAlbumElement = $('.photo-album-component');
             const sliderTrack = $('.slider-track');
 
             for (let index = 0; index < fotos.length; index++) {
                 const sliderItem = $('<div>').addClass('slider-item');
+                const photoItem = $('<div>').addClass('photo-item');
 
                 const img = $('<img>').attr({
                     src: require(`../assets/album/${fotos[index]}`),
                     alt: titles[index],
                 }).addClass('photo');
+
+                const sliderImg = $('<img>').attr({
+                    src: require(`../assets/album/${fotos[index]}`),
+                    alt: titles[index],
+                }).addClass('slider-photo');
 
                 const tooltip = $('<div>')
                     .text(titles[index])
@@ -107,34 +119,31 @@ export default {
                 const caption = $('<div>')
                     .text(titles[index])
                     .addClass('caption');
-                
+
                 const modalImage = $('<div>')
                     .addClass('modal')
                     .attr('id', titles[index]);
 
-                const closeModalImage = $('<span>')
-                    .addClass('close')
-                    .html('&times;');
-
-                const imageContentModal = $('<img>').attr({
-                    id: fotos[index],
-                    src: require(`../assets/album/${fotos[index]}`),
-                }).addClass('modal-content');
-
-                modalImage.append(closeModalImage, imageContentModal);
-                $('body').append(modalImage);
-
                 img.on('click', () => {
-                    modalImage.css('display', 'flex');
+                    sliderItemWidth = $('.slider-item').width();
+                    position = index;
+                    movePosition = -(position * sliderItemWidth);
+                    
+                    this.setPosition(movePosition);
+                    modalContainer.css('display', 'block');
                 });
 
-                closeModalImage.on('click', () => {
-                    modalImage.css('display', 'none');
+                modalCloseElement.on('click', () => {
+                    modalContainer.css('display', 'none');
                 });
 
-                sliderItem.append(img, tooltip, caption);
+                photoItem.append(img, tooltip, caption, modalImage);
+                photoAlbumElement.append(photoItem);
+                sliderItem.append(sliderImg);
                 sliderTrack.append(sliderItem);
             }
+
+            return photoAlbumElement;
         },
     },
 };
