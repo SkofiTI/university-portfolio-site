@@ -103,6 +103,11 @@
                     top: 15%;
                 }
             }
+
+            .prev:hover,
+            .next:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
     
             .prev {
                 border-radius: 100%;
@@ -110,6 +115,10 @@
                 
                 a {
                     right: 20%;
+                }
+
+                &:hover {
+                    transform: translate(-50%, -50%) scale(1.1);
                 }
             }
     
@@ -121,19 +130,10 @@
                 a {
                     left: 20%;
                 }
-            }
-    
-            .prev:hover,
-            .next:hover {
-                background-color: rgba(0, 0, 0, 0.8);
-            }
-    
-            .prev:hover {
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-    
-            .next:hover {
-                transform: translate(50%, -50%) scale(1.1);
+
+                &:hover {
+                    transform: translate(50%, -50%) scale(1.1);
+                }
             }
         }
     
