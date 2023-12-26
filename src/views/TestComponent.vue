@@ -1,39 +1,29 @@
 <template>
     <div class="test-component">
         <h1 class="title">Тест</h1>
-        
-        <form action="mailto:suren.arakelyan994@gmail.com" method="POST">
+    
+        <form action="mailto:suren.arakelyan994@gmail.com" method="POST" @submit="handleSubmit">
             <div class="form-item">
                 <label for="surname">Фамилия</label>
-                <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
+                <input type="text" id="surname" v-model="formData.surname" placeholder="Введите фамилию" />
             </div>
-            
+    
             <div class="form-item">
                 <label for="name">Имя</label>
-                <input type="text" id="name" name="name" placeholder="Введите имя">
+                <input type="text" id="name" v-model="formData.name" placeholder="Введите имя" />
             </div>
-            
+    
             <div class="form-item">
                 <label for="lastname">Отчество</label>
-                <input type="text" id="lastname" name="lastname" placeholder="Введите отчество">
+                <input type="text" id="lastname" v-model="formData.lastname" placeholder="Введите отчество" />
             </div>
-            
-            
+    
             <div class="form-item">
                 <label for="group">Группа</label>
-                <select id="group" name="group">
+                <select id="group" v-model="formData.group" name="group">
                     <option value="" disabled selected>Выберите Группу</option>
-                    <optgroup label="1 курс">
-                        <option value="ИС-1">ИС-1</option>
-                        <option value="ИТ-1">ИТ-1</option>
-                    </optgroup>
-                    <optgroup label="2 курс">
-                        <option value="ИС-2">ИС-2</option>
-                        <option value="ИТ-2">ИТ-2</option>
-                    </optgroup>
-                    <optgroup label="3 курс">
-                        <option value="ИС/б-21-1-о">ИС/б-21-3-о</option>
-                        <option value="ИС/б-21-3-о">ИТ/б-21-3-о</option>
+                    <optgroup v-for="course in courses" :label="course.label" :key="course.label">
+                        <option v-for="option in course.options" :value="option.value" :key="option.value">{{ option.label }}</option>
                     </optgroup>
                 </select>
             </div>
@@ -79,11 +69,11 @@
                     </div>
                 </div>
             </div>
-            
+    
             <div class="button-container">
                 <button id="send" type="submit">Отправить</button>
                 <button id="clear" type="reset">
-                    <img id="reset" src="../assets/reset.svg" alt="reset">
+                    <img id="reset" src="../assets/reset.svg" alt="reset" />
                 </button>
             </div>
         </form>

@@ -4,6 +4,39 @@ import $ from 'jquery';
 
 export default {
     name: 'TestComponent',
+    data() {
+        return {
+            formData: {
+                surname: '',
+                name: '',
+                lastname: '',
+                group: '',
+            },
+            courses: [
+                {
+                    label: '1 курс',
+                    options: [
+                        { label: 'ИС-1', value: 'ИС-1' },
+                        { label: 'ИТ-1', value: 'ИТ-1' },
+                    ],
+                },
+                {
+                    label: '2 курс',
+                    options: [
+                        { label: 'ИС-2', value: 'ИС-2' },
+                        { label: 'ИТ-2', value: 'ИТ-2' },
+                    ],
+                },
+                {
+                    label: '3 курс',
+                    options: [
+                        { label: 'ИС/б-21-1-о', value: 'ИС/б-21-1-о' },
+                        { label: 'ИТ/б-21-1-о', value: 'ИТ/б-21-1-о' },
+                    ],
+                },
+            ],
+        };
+    },
     mounted() {
         const testForm = $('.test-component form');
         const textarea = $('#question1');
